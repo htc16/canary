@@ -1166,9 +1166,7 @@ void Game::playerMoveThing(uint32_t playerId, const Position &fromPos, uint16_t 
 
 		if (Position::areInRange<1, 1, 0>(movingCreature->getPosition(), player->getPosition())) {
 
-		    player->setNextActionPushTask(g_configManager().getNumber(PUSH_DELAY, __FUNCTION__),
-                std::bind(&Game::playerMoveCreatureByID, this, player->getID(), movingCreature->getID(), movingCreature->getPosition(), tile->getPosition()),
-                "Game::playerMoveCreatureByID");
+			player->setNextActionPushTask(g_configManager().getNumber(PUSH_DELAY, __FUNCTION__), std::bind(&Game::playerMoveCreatureByID, this, player->getID(), movingCreature->getID(), movingCreature->getPosition(), tile->getPosition()), "Game::playerMoveCreatureByID");
 		} else {
 			playerMoveCreature(player, movingCreature, movingCreature->getPosition(), tile);
 		}
@@ -1216,7 +1214,7 @@ void Game::playerMoveCreature(std::shared_ptr<Player> player, std::shared_ptr<Cr
 	if (!Position::areInRange<1, 1, 0>(movingCreatureOrigPos, player->getPosition())) {
 		// need to walk to the creature first before moving it
 		stdext::arraylist<Direction> listDir(128);
-	    if (player->getPathTo(movingCreatureOrigPos, listDir, 0, 1, true, false)) {
+		if (player->getPathTo(movingCreatureOrigPos, listDir, 0, 1, true, false)) {
 			g_dispatcher().addEvent(std::bind(&Game::playerAutoWalk, this, player->getID(), listDir.data()), "Game::playerAutoWalk");
 
 			player->pushEvent(true);
@@ -3175,7 +3173,7 @@ void Game::playerMove(uint32_t playerId, Direction direction) {
 	}
 
 	player->resetIdleTime();
-    player->stopNextWalkActionTask();
+	player->stopNextWalkActionTask();
 	player->cancelPush();
 
 	player->startAutoWalk(std::vector<Direction> { direction }, false);
@@ -3363,7 +3361,7 @@ void Game::playerAutoWalk(uint32_t playerId, const std::vector<Direction> &listD
 	}
 
 	player->resetIdleTime();
-    player->stopNextWalkActionTask();
+	player->stopNextWalkActionTask();
 	player->startAutoWalk(listDir, false);
 }
 
@@ -3379,7 +3377,7 @@ void Game::forcePlayerAutoWalk(uint32_t playerId, const std::vector<Direction> &
 	player->setFollowCreature(nullptr);
 
 	player->resetIdleTime();
-    player->stopNextWalkActionTask();
+	player->stopNextWalkActionTask();
 
 	player->startAutoWalk(listDir, true);
 }
@@ -3500,9 +3498,9 @@ void Game::playerUseItemEx(uint32_t playerId, const Position &fromPos, uint8_t f
 
 	player->resetIdleTime();
 	if (it.isRune() || it.type == ITEM_TYPE_POTION) {
-	    player->stopNextPotionActionTask();
+		player->stopNextPotionActionTask();
 	} else {
-	    player->stopNextActionTask();
+		player->stopNextActionTask();
 	}
 
 	// Refresh depot search window if necessary
@@ -3607,7 +3605,7 @@ void Game::playerUseItem(uint32_t playerId, const Position &pos, uint8_t stackPo
 	}
 
 	player->resetIdleTime();
-    player->stopNextActionTask();
+	player->stopNextActionTask();
 
 	// Refresh depot search window if necessary
 	bool refreshDepotSearch = false;
@@ -3915,7 +3913,7 @@ void Game::playerConfigureShowOffSocket(uint32_t playerId, const Position &pos, 
 			if (isPodiumOfRenown) {
 				player->setNextWalkActionTask(400, std::bind_front(&Player::sendPodiumWindow, player, item, pos, itemId, stackPos), "Game::playerConfigureShowOffSocket");
 			} else {
-			    player->setNextWalkActionTask(400, std::bind_front(&Player::sendMonsterPodiumWindow, player, item, pos, itemId, stackPos), "Game::playerConfigureShowOffSocket");
+				player->setNextWalkActionTask(400, std::bind_front(&Player::sendMonsterPodiumWindow, player, item, pos, itemId, stackPos), "Game::playerConfigureShowOffSocket");
 			}
 		} else {
 			player->sendCancelMessage(RETURNVALUE_THEREISNOWAY);
@@ -9560,30 +9558,30 @@ void Game::playerWheelGemAction(uint32_t playerId, NetworkMessage &msg) {
 ********************/
 
 void Game::updatePlayerEvent(std::shared_ptr<Player> player) const {
-    using PlayerUpdate = PlayerUpdateFlags;
+	using PlayerUpdate = PlayerUpdateFlags;
 
-    if (player->hasScheduledUpdates(static_cast<int>(PlayerUpdate::PlayerUpdate_Weight))) {
-        player->updateInventoryWeight();
-    }
+	if (player->hasScheduledUpdates(static_cast<int>(PlayerUpdate::PlayerUpdate_Weight))) {
+		player->updateInventoryWeight();
+	}
 
-    if (player->hasScheduledUpdates(static_cast<int>(PlayerUpdate::PlayerUpdate_Light))) {
-        player->updateItemsLight();
-    }
+	if (player->hasScheduledUpdates(static_cast<int>(PlayerUpdate::PlayerUpdate_Light))) {
+		player->updateItemsLight();
+	}
 
-    if (player->hasScheduledUpdates(static_cast<int>(PlayerUpdate::PlayerUpdate_Stats))) {
-        player->sendStats();
-    }
+	if (player->hasScheduledUpdates(static_cast<int>(PlayerUpdate::PlayerUpdate_Stats))) {
+		player->sendStats();
+	}
 
-    if (player->hasScheduledUpdates(static_cast<int>(PlayerUpdate::PlayerUpdate_Skills))) {
-        player->sendSkills();
-    }
+	if (player->hasScheduledUpdates(static_cast<int>(PlayerUpdate::PlayerUpdate_Skills))) {
+		player->sendSkills();
+	}
 
-    if (player->hasScheduledUpdates(static_cast<int>(PlayerUpdate::PlayerUpdate_Inventory) | static_cast<int>(PlayerUpdate::PlayerUpdate_Sale))) {
-        std::map<uint16_t, uint16_t> inventoryMap;
-        player->sendSaleItemList(player->getAllSaleItemIdAndCount(inventoryMap));
-    }
+	if (player->hasScheduledUpdates(static_cast<int>(PlayerUpdate::PlayerUpdate_Inventory) | static_cast<int>(PlayerUpdate::PlayerUpdate_Sale))) {
+		std::map<uint16_t, uint16_t> inventoryMap;
+		player->sendSaleItemList(player->getAllSaleItemIdAndCount(inventoryMap));
+	}
 
-    player->resetScheduledUpdates();
+	player->resetScheduledUpdates();
 }
 
 void Game::addPlayer(std::shared_ptr<Player> player) {

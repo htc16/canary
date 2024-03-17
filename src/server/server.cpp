@@ -113,8 +113,8 @@ void ServicePort::onAccept(Connection_ptr connection, const std::error_code &err
 		if (!pendingStart) {
 			close();
 			pendingStart = true;
-		    deadline_timer.expires_from_now(std::chrono::seconds(15));
-		    deadline_timer.async_wait(std::bind(&ServicePort::openAcceptor, std::weak_ptr<ServicePort>(shared_from_this()), serverPort));
+			deadline_timer.expires_from_now(std::chrono::seconds(15));
+			deadline_timer.async_wait(std::bind(&ServicePort::openAcceptor, std::weak_ptr<ServicePort>(shared_from_this()), serverPort));
 		}
 	}
 }
@@ -163,8 +163,8 @@ void ServicePort::open(uint16_t port) {
 		g_logger().warn("[ServicePort::open] - Error code: {}", e.what());
 
 		pendingStart = true;
-	    deadline_timer.expires_from_now(std::chrono::seconds(15));
-	    deadline_timer.async_wait(std::bind(&ServicePort::openAcceptor, std::weak_ptr<ServicePort>(shared_from_this()), port));
+		deadline_timer.expires_from_now(std::chrono::seconds(15));
+		deadline_timer.async_wait(std::bind(&ServicePort::openAcceptor, std::weak_ptr<ServicePort>(shared_from_this()), port));
 	}
 }
 

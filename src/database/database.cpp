@@ -15,15 +15,15 @@
 #include "lib/metrics/metrics.hpp"
 
 bool Database::init() const {
-    if (mysql_library_init(0, nullptr, nullptr) != 0) {
-       g_logger().error("Failed to initialize MySQL client library.");
-        return false;
-    }
-    return true;
+	if (mysql_library_init(0, nullptr, nullptr) != 0) {
+		g_logger().error("Failed to initialize MySQL client library.");
+		return false;
+	}
+	return true;
 }
 
 void Database::end() const {
-    mysql_library_end();
+	mysql_library_end();
 }
 
 Database &Database::getInstance() {
@@ -31,23 +31,23 @@ Database &Database::getInstance() {
 }
 
 bool Database::connect() {
-    // thread-specific variables initialization
-    if (mysql_thread_init() != 0) {
-        g_logger().error("Failed to initialize MySQL thread-specific variables.");
-        return false;
-    }
+	// thread-specific variables initialization
+	if (mysql_thread_init() != 0) {
+		g_logger().error("Failed to initialize MySQL thread-specific variables.");
+		return false;
+	}
 
 	return connect(&g_configManager().getString(MYSQL_HOST, __FUNCTION__), &g_configManager().getString(MYSQL_USER, __FUNCTION__), &g_configManager().getString(MYSQL_PASS, __FUNCTION__), &g_configManager().getString(MYSQL_DB, __FUNCTION__), g_configManager().getNumber(SQL_PORT, __FUNCTION__), &g_configManager().getString(MYSQL_SOCK, __FUNCTION__));
 }
 
 bool Database::connect(const std::string* host, const std::string* user, const std::string* password, const std::string* database, uint32_t port, const std::string* sock) {
-    // thread-specific variables initialization
-    if (mysql_thread_init() != 0) {
-        g_logger().error("Failed to initialize MySQL thread-specific variables.");
-        return false;
-    }
+	// thread-specific variables initialization
+	if (mysql_thread_init() != 0) {
+		g_logger().error("Failed to initialize MySQL thread-specific variables.");
+		return false;
+	}
 
-    // connection handle initialization
+	// connection handle initialization
 	handle = mysql_init(nullptr);
 	if (!handle) {
 		g_logger().error("Failed to initialize MySQL connection handle.");
@@ -76,12 +76,12 @@ bool Database::connect(const std::string* host, const std::string* user, const s
 }
 
 void Database::disconnect() {
-    if (handle != nullptr) {
-        mysql_close(handle);
-        handle = nullptr;
-    }
+	if (handle != nullptr) {
+		mysql_close(handle);
+		handle = nullptr;
+	}
 
-    mysql_thread_end();
+	mysql_thread_end();
 }
 
 bool Database::beginTransaction() {
@@ -216,17 +216,17 @@ std::string Database::escapeBlob(const char* s, uint32_t length) const {
 	size_t maxLength = (length * 2) + 1;
 
 	std::string escaped;
-    escaped.resize(maxLength + 2);
+	escaped.resize(maxLength + 2);
 
-    size_t position = 0;
-    escaped[position++] = '\'';
+	size_t position = 0;
+	escaped[position++] = '\'';
 
 	if (length != 0) {
-	    position += mysql_real_escape_string(handle, &escaped[position], s, length);
+		position += mysql_real_escape_string(handle, &escaped[position], s, length);
 	}
 
-    escaped[position++] = '\'';
-    escaped.resize(position);
+	escaped[position++] = '\'';
+	escaped.resize(position);
 	return escaped;
 }
 

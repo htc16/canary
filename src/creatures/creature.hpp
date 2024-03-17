@@ -238,15 +238,15 @@ public:
 	}
 
 	virtual std::vector<CreatureIcon> getIcons() const {
-		auto filteredIcons = creatureIcons | std::views::values | std::views::filter([](const CreatureIcon& icon) {
-            return icon.isSet();
-        });
+		auto filteredIcons = creatureIcons | std::views::values | std::views::filter([](const CreatureIcon &icon) {
+								 return icon.isSet();
+							 });
 
-        std::vector<CreatureIcon> icons;
-        icons.reserve(std::distance(filteredIcons.begin(), filteredIcons.end())); // Isso evita múltiplas realocações
-        std::ranges::copy(filteredIcons, std::back_inserter(icons));
-        return icons;
-    }
+		std::vector<CreatureIcon> icons;
+		icons.reserve(std::distance(filteredIcons.begin(), filteredIcons.end())); // Isso evita múltiplas realocações
+		std::ranges::copy(filteredIcons, std::back_inserter(icons));
+		return icons;
+	}
 
 	virtual CreatureIcon getIcon(const std::string &key) const {
 		auto it = creatureIcons.find(key);

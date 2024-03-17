@@ -100,7 +100,7 @@ private:
 class Raid {
 public:
 	Raid(std::string initName, uint32_t initInterval, uint32_t initMarginTime, bool initRepeat) :
-	name(std::move(initName)), margin(initMarginTime), interval(initInterval), repeat(initRepeat) { }
+		name(std::move(initName)), margin(initMarginTime), interval(initInterval), repeat(initRepeat) { }
 	~Raid() = default;
 
 	// non-copyable

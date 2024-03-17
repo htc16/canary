@@ -599,13 +599,13 @@ void Creature::onCreatureMove(const std::shared_ptr<Creature> &creature, const s
 	const auto &followCreature = getFollowCreature();
 	if (followCreature && (creature == getCreature() || creature == followCreature)) {
 		if (hasFollowPath) {
-		    if ((creature == followCreature) && listWalkDir.empty()) {
-		        // This should make monsters more responsive without needing to decrease creature think interval
-		        isUpdatingPath = false;
-			    g_dispatcher().addEvent(std::bind(&Game::updateCreatureWalk, &g_game(), getID()), "Game::updateCreatureWalk");
-		    } else {
-		        isUpdatingPath = true;
-		    }
+			if ((creature == followCreature) && listWalkDir.empty()) {
+				// This should make monsters more responsive without needing to decrease creature think interval
+				isUpdatingPath = false;
+				g_dispatcher().addEvent(std::bind(&Game::updateCreatureWalk, &g_game(), getID()), "Game::updateCreatureWalk");
+			} else {
+				isUpdatingPath = true;
+			}
 		}
 
 		if (newPos.z != oldPos.z || !canSee(followCreature->getPosition())) {
@@ -828,7 +828,7 @@ bool Creature::dropCorpse(std::shared_ptr<Creature> lastHitCreature, std::shared
 		}
 
 		// Scripting event onDeath
-		for (const auto& deathEventPtr : getCreatureEvents(CREATURE_EVENT_DEATH)) {
+		for (const auto &deathEventPtr : getCreatureEvents(CREATURE_EVENT_DEATH)) {
 			if (deathEventPtr) {
 				deathEventPtr->executeOnDeath(static_self_cast<Creature>(), corpse, lastHitCreature, mostDamageCreature, lastHitUnjustified, mostDamageUnjustified);
 			}
@@ -1134,7 +1134,7 @@ bool Creature::setFollowCreature(std::shared_ptr<Creature> creature) {
 		forceUpdateFollowPath = false;
 		m_followCreature = creature;
 		isUpdatingPath = true;
-	    g_dispatcher().addEvent(std::bind(&Game::updateCreatureWalk, &g_game(), getID()), "Game::setFollowCreature");
+		g_dispatcher().addEvent(std::bind(&Game::updateCreatureWalk, &g_game(), getID()), "Game::setFollowCreature");
 	} else {
 		isUpdatingPath = false;
 		m_followCreature.reset();

@@ -2776,9 +2776,9 @@ private:
 	std::shared_ptr<Party> m_party = nullptr;
 	std::shared_ptr<Player> tradePartner = nullptr;
 	ProtocolGame_ptr client;
-	//std::shared_ptr<Task> walkTask;
-    std::shared_ptr<std::tuple<uint32_t, std::function<void(void)>, std::string>> walkTask;
-    std::shared_ptr<Town> town;
+	// std::shared_ptr<Task> walkTask;
+	std::shared_ptr<std::tuple<uint32_t, std::function<void(void)>, std::string>> walkTask;
+	std::shared_ptr<Town> town;
 	Vocation* vocation = nullptr;
 	std::shared_ptr<RewardChest> rewardChest = nullptr;
 

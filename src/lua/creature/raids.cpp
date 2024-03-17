@@ -88,7 +88,7 @@ bool Raids::loadFromXml() {
 			g_logger().error("{} - Failed to load raid: {}", __FUNCTION__, name);
 		}
 	}
-    raidList.shrink_to_fit();
+	raidList.shrink_to_fit();
 
 	loaded = true;
 	return true;
@@ -127,8 +127,8 @@ void Raids::checkRaids() {
 					raid->startRaid();
 
 					if (!raid->canBeRepeated()) {
-					    (*it) = std::move(raidList.back());
-					    raidList.pop_back();
+						(*it) = std::move(raidList.back());
+						raidList.pop_back();
 					}
 					break;
 				}
@@ -526,7 +526,7 @@ bool AreaSpawnEvent::configureRaidEvent(const pugi::xml_node &eventNode) {
 
 		spawnMonsterList.emplace_back(name, minAmount, maxAmount);
 	}
-    spawnMonsterList.shrink_to_fit();
+	spawnMonsterList.shrink_to_fit();
 	return true;
 }
 

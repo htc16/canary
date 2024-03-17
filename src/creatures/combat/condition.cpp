@@ -588,9 +588,8 @@ void ConditionAttributes::updateStats(std::shared_ptr<Player> player) {
 		}
 	}
 
-    if (needUpdate) {
-        player->addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats) |
-                                    static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Skills));
+	if (needUpdate) {
+		player->addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats) | static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Skills));
 	}
 }
 
@@ -616,8 +615,8 @@ void ConditionAttributes::updateSkills(std::shared_ptr<Player> player) {
 		}
 	}
 
-    if (needUpdateSkills) {
-        player->addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Skills));
+	if (needUpdateSkills) {
+		player->addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Skills));
 	}
 }
 
@@ -715,9 +714,8 @@ void ConditionAttributes::endCondition(std::shared_ptr<Creature> creature) {
 
 		player->setCharmChanceModifier(player->getCharmChanceModifier() - charmChanceModifier);
 
-	    if (needUpdate) {
-	        player->addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats) |
-	                                    static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Skills));
+		if (needUpdate) {
+			player->addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats) | static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Skills));
 		}
 	}
 	bool needUpdateIcons = false;
@@ -1103,14 +1101,14 @@ bool ConditionRegeneration::startCondition(std::shared_ptr<Creature> creature) {
 	}
 
 	if (const std::shared_ptr<Player> player = creature->getPlayer()) {
-	    player->addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats));
+		player->addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats));
 	}
 	return true;
 }
 
 void ConditionRegeneration::endCondition(std::shared_ptr<Creature> creature) {
 	if (const std::shared_ptr<Player> player = creature->getPlayer()) {
-	    player->addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats));
+		player->addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats));
 	}
 }
 
@@ -1128,7 +1126,7 @@ void ConditionRegeneration::addCondition(std::shared_ptr<Creature> creature, con
 	}
 
 	if (const auto player = creature->getPlayer()) {
-	    player->addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats));
+		player->addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats));
 	}
 }
 
@@ -1277,7 +1275,7 @@ bool ConditionManaShield::startCondition(std::shared_ptr<Creature> creature) {
 	creature->setMaxManaShield(manaShield);
 
 	if (const std::shared_ptr<Player> player = creature->getPlayer()) {
-	    player->addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats));
+		player->addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats));
 	}
 
 	return true;
@@ -1287,7 +1285,7 @@ void ConditionManaShield::endCondition(std::shared_ptr<Creature> creature) {
 	creature->setManaShield(0);
 	creature->setMaxManaShield(0);
 	if (const std::shared_ptr<Player> player = creature->getPlayer()) {
-	    player->addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats));
+		player->addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats));
 	}
 }
 
@@ -1302,7 +1300,7 @@ void ConditionManaShield::addCondition(std::shared_ptr<Creature> creature, const
 	creature->setMaxManaShield(manaShield);
 
 	if (const std::shared_ptr<Player> player = creature->getPlayer()) {
-	    player->addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats));
+		player->addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats));
 	}
 }
 

@@ -355,7 +355,7 @@ void IOLoginDataLoad::loadPlayerGuild(std::shared_ptr<Player> player, DBResult_p
 		}
 
 		if (guild) {
-		    g_game().addGuild(guild);
+			g_game().addGuild(guild);
 			player->guild = guild;
 			GuildRank_ptr rank = guild->getRankById(playerRankId);
 			if (!rank) {

@@ -716,8 +716,7 @@ void Player::addSkillAdvance(skills_t skill, uint64_t count) {
 	}
 
 	if (sendUpdateSkills) {
-	    addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats) |
-	                        static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Skills));
+		addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats) | static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Skills));
 	}
 }
 
@@ -1916,7 +1915,7 @@ void Player::onWalk(Direction &dir) {
 		if (tile) {
 			const std::shared_ptr<MagicField> field = tile->getFieldItem();
 			if (field && !field->isBlocking() && field->getDamage() != 0) {
-			    stopNextActionTask();
+				stopNextActionTask();
 				setNextAction(OTSYS_TIME() + getStepDuration(dir));
 				return;
 			}
@@ -1924,7 +1923,7 @@ void Player::onWalk(Direction &dir) {
 	}
 
 	Creature::onWalk(dir);
-    stopNextActionTask();
+	stopNextActionTask();
 	setNextAction(OTSYS_TIME() + getStepDuration(dir));
 }
 
@@ -2114,43 +2113,42 @@ void Player::stopNextPotionActionTask() {
 		g_dispatcher().stopEvent(actionPotionTaskEvent);
 		actionPotionTaskEvent = 0;
 	}
-
 }
 
 void Player::setNextWalkActionTask(uint32_t delay, std::function<void(void)> f, std::string_view context) {
-    stopNextWalkActionTask();
-    walkTask = std::make_shared<std::tuple<uint32_t, std::function<void(void)>, std::string>>(delay, std::move(f), context);
+	stopNextWalkActionTask();
+	walkTask = std::make_shared<std::tuple<uint32_t, std::function<void(void)>, std::string>>(delay, std::move(f), context);
 }
 
 void Player::setNextWalkTask(uint32_t delay, std::function<void(void)> f) {
-    stopNextWalkTask();
-    nextStepEvent = g_dispatcher().scheduleEvent(delay, std::move(f), __FUNCTION__);
-    resetIdleTime();
+	stopNextWalkTask();
+	nextStepEvent = g_dispatcher().scheduleEvent(delay, std::move(f), __FUNCTION__);
+	resetIdleTime();
 }
 
 void Player::setNextActionTask(uint32_t delay, std::function<void(void)> f, bool resetIdleTime /*= true */) {
-    stopNextActionTask();
-    actionTaskEvent = g_dispatcher().scheduleEvent(delay, std::move(f), __FUNCTION__);
+	stopNextActionTask();
+	actionTaskEvent = g_dispatcher().scheduleEvent(delay, std::move(f), __FUNCTION__);
 
-    if (!inEventMovePush && !g_configManager().getBoolean(PUSH_WHEN_ATTACKING, __FUNCTION__)) {
-        cancelPush();
-    }
+	if (!inEventMovePush && !g_configManager().getBoolean(PUSH_WHEN_ATTACKING, __FUNCTION__)) {
+		cancelPush();
+	}
 
-    if (resetIdleTime) {
-        this->resetIdleTime();
+	if (resetIdleTime) {
+		this->resetIdleTime();
 	}
 }
 
 void Player::setNextActionPushTask(uint32_t delay, std::function<void(void)> f, std::string_view context) {
-    stopNextActionPushTask();
-    actionTaskEventPush = g_dispatcher().scheduleEvent(delay, std::move(f), context);
-    resetIdleTime();
+	stopNextActionPushTask();
+	actionTaskEventPush = g_dispatcher().scheduleEvent(delay, std::move(f), context);
+	resetIdleTime();
 }
 
 void Player::setNextPotionActionTask(uint32_t delay, std::function<void(void)> f, std::string_view context) {
-    stopNextPotionActionTask();
-    actionPotionTaskEvent = g_dispatcher().scheduleEvent(delay, std::move(f), context);
-    cancelPush();
+	stopNextPotionActionTask();
+	actionPotionTaskEvent = g_dispatcher().scheduleEvent(delay, std::move(f), context);
+	cancelPush();
 }
 
 uint32_t Player::getNextActionTime() const {
@@ -2324,7 +2322,7 @@ void Player::addManaSpent(uint64_t amount) {
 	}
 
 	if (sendUpdateStats) {
-	    addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats) | static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Skills));
+		addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats) | static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Skills));
 	}
 }
 
@@ -2335,7 +2333,7 @@ void Player::addExperience(std::shared_ptr<Creature> target, uint64_t exp, bool 
 	if (currLevelExp >= nextLevelExp) {
 		// player has reached max level
 		levelPercent = 0;
-	    addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats));
+		addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats));
 		return;
 	}
 
@@ -4150,8 +4148,8 @@ void Player::postAddNotification(std::shared_ptr<Thing> thing, std::shared_ptr<C
 			onSendContainer(container);
 		}
 
-	    if (requireListUpdate) {
-	        addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Inventory));
+		if (requireListUpdate) {
+			addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Inventory));
 		}
 	} else if (std::shared_ptr<Creature> creature = thing->getCreature()) {
 		if (creature == getPlayer()) {
@@ -4235,8 +4233,8 @@ void Player::postRemoveNotification(std::shared_ptr<Thing> thing, std::shared_pt
 			requireListUpdate = true;
 		}
 
-	    if (requireListUpdate) {
-	        addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Inventory));
+		if (requireListUpdate) {
+			addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Inventory));
 		}
 	}
 }
@@ -4368,9 +4366,9 @@ void Player::doAttacking(uint32_t) {
 		}
 
 		if (!classicSpeed) {
-		    setNextActionTask(std::max<uint32_t>(SERVER_BEAT_MILISECONDS, delay), std::bind(&Game::checkCreatureAttack, &g_game(), getID()));
+			setNextActionTask(std::max<uint32_t>(SERVER_BEAT_MILISECONDS, delay), std::bind(&Game::checkCreatureAttack, &g_game(), getID()));
 		} else {
-		    g_dispatcher().scheduleEvent(std::max<uint32_t>(SERVER_BEAT_MILISECONDS, delay), std::bind(&Game::checkCreatureAttack, &g_game(), getID()), __FUNCTION__);
+			g_dispatcher().scheduleEvent(std::max<uint32_t>(SERVER_BEAT_MILISECONDS, delay), std::bind(&Game::checkCreatureAttack, &g_game(), getID()), __FUNCTION__);
 		}
 
 		if (result) {
@@ -4416,7 +4414,7 @@ void Player::setChaseMode(bool mode) {
 }
 
 void Player::onWalkAborted() {
-    stopNextWalkActionTask();
+	stopNextWalkActionTask();
 	sendCancelWalk();
 }
 
@@ -4433,22 +4431,21 @@ void Player::onWalkComplete() {
 		f->executeCondition(static_self_cast<Player>(), 0);
 	}
 
-    if (walkTask) {
-        // Acessando os elementos do tuple.
-        auto delay = std::get<0>(*walkTask);
-        auto task = std::get<1>(*walkTask);
-        auto context = std::get<2>(*walkTask);
-        // O contexto agora é acessível via std::get<2>(*walkTask), mas não é usado diretamente aqui.
+	if (walkTask) {
+		// Acessando os elementos do tuple.
+		auto delay = std::get<0>(*walkTask);
+		auto task = std::get<1>(*walkTask);
+		auto context = std::get<2>(*walkTask);
+		// O contexto agora é acessível via std::get<2>(*walkTask), mas não é usado diretamente aqui.
 
-        // Agendando o evento com o delay e a task.
-        // Supondo que g_dispatcher().scheduleEvent aceite os mesmos argumentos,
-        // o std::move(task) é necessário pois std::function geralmente é movido para evitar cópias.
-        walkTaskEvent = g_dispatcher().scheduleEvent(delay, std::move(task), context);
+		// Agendando o evento com o delay e a task.
+		// Supondo que g_dispatcher().scheduleEvent aceite os mesmos argumentos,
+		// o std::move(task) é necessário pois std::function geralmente é movido para evitar cópias.
+		walkTaskEvent = g_dispatcher().scheduleEvent(delay, std::move(task), context);
 
-        // Resetando o walkTask para nullptr depois de agendar o evento.
-        walkTask = nullptr;
-    }
-
+		// Resetando o walkTask para nullptr depois de agendar o evento.
+		walkTask = nullptr;
+	}
 }
 
 void Player::stopWalk() {
@@ -6049,7 +6046,7 @@ bool Player::addOfflineTrainingTries(skills_t skill, uint64_t tries) {
 	}
 
 	if (sendUpdate) {
-	    addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats) | static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Skills));
+		addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats) | static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Skills));
 	}
 
 	std::string message = fmt::format(
@@ -6339,7 +6336,7 @@ void Player::addItemImbuementStats(const Imbuement* imbuement) {
 	}
 
 	if (requestUpdate) {
-	    addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats) | static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Skills));
+		addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats) | static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Skills));
 	}
 }
 
@@ -6377,7 +6374,7 @@ void Player::removeItemImbuementStats(const Imbuement* imbuement) {
 	}
 
 	if (requestUpdate) {
-	    addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats) | static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Skills));
+		addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats) | static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Skills));
 	}
 }
 
@@ -6686,7 +6683,7 @@ void Player::triggerTranscendance() {
 		wheel()->setOnThinkTimer(WheelOnThink_t::AVATAR, OTSYS_TIME() + duration);
 		g_game().addMagicEffect(getPosition(), CONST_ME_AVATAR_APPEAR);
 		sendTextMessage(MESSAGE_ATTENTION, "Transcendance was triggered.");
-	    addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats) | static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Skills));
+		addScheduledUpdates(static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Stats) | static_cast<int>(PlayerUpdateFlags::PlayerUpdate_Skills));
 		sendBasicData();
 		wheel()->sendGiftOfLifeCooldown();
 		g_game().reloadCreature(getPlayer());
@@ -8081,10 +8078,10 @@ bool Player::canSpeakWithHireling(uint8_t speechbubble) {
 }
 
 void Player::addScheduledUpdates(uint32_t flags) {
-    scheduledUpdates |= flags;
-    if (!scheduledUpdate) {
-        // To make it work even better it's possible to use slightly delayed scheduler task so it'll cache even more updates at once
-        g_dispatcher().scheduleEvent(SERVER_BEAT_MILISECONDS, std::bind(&Game::updatePlayerEvent, &g_game(), getPlayer()), __FUNCTION__);
-        scheduledUpdate = true;
-    }
+	scheduledUpdates |= flags;
+	if (!scheduledUpdate) {
+		// To make it work even better it's possible to use slightly delayed scheduler task so it'll cache even more updates at once
+		g_dispatcher().scheduleEvent(SERVER_BEAT_MILISECONDS, std::bind(&Game::updatePlayerEvent, &g_game(), getPlayer()), __FUNCTION__);
+		scheduledUpdate = true;
+	}
 }
